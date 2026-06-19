@@ -23,6 +23,7 @@ with DAG(
         image=Variable.get("openmetadata_ingestion_image", default_var=DEFAULT_IMAGE),
         cmds=["bash", "-lc"],
         arguments=[Variable.get("openmetadata_ingestion_command", default_var=DEFAULT_COMMAND)],
+        startup_timeout_seconds=600,
         env_vars={
             "OPENMETADATA_SERVER_URL": Variable.get(
                 "openmetadata_server_url",
@@ -39,5 +40,5 @@ with DAG(
             "DREMIO_DATABASE": Variable.get("dremio_database", default_var="coedata"),
         },
         get_logs=True,
-        is_delete_operator_pod=True,
+        is_delete_operator_pod=False,
     )
