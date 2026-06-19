@@ -1,0 +1,39 @@
+source:
+  type: CustomDatabase
+  serviceName: Dremio 20260615
+  serviceConnection:
+    config:
+      type: CustomDatabase
+      sourcePythonClass: metadata.ingestion.source.database.dremio.metadata.DremioSource
+      connectionOptions:
+        hostPort: ${DREMIO_HOST}:${DREMIO_PORT}
+        username: ${DREMIO_USERNAME}
+        password: ${DREMIO_PASSWORD}
+        database: ${DREMIO_DATABASE}
+  sourceConfig:
+    config:
+      type: DatabaseMetadata
+      databaseFilterPattern:
+        includes:
+          - ${DREMIO_DATABASE}
+        excludes: []
+      schemaFilterPattern:
+        includes: []
+        excludes: []
+      tableFilterPattern:
+        includes: []
+        excludes: []
+      supportsMetadataExtraction: true
+processor:
+  type: orm
+  config: {}
+sink:
+  type: metadata-rest
+  config: {}
+workflowConfig:
+  openMetadataServerConfig:
+    hostPort: ${OPENMETADATA_SERVER_URL}
+    authProvider: openmetadata
+    securityConfig:
+      jwtToken: ${OPENMETADATA_JWT_TOKEN}
+  loggerLevel: INFO
